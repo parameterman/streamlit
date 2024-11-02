@@ -103,7 +103,7 @@ class App(BaseApp):
         st.title(self.config.name)
 
         input_vars = self.create_input_container()
-        self.show_sidebar()
+        # self.show_sidebar()
         if st.button("运行工作流"):
             if self.valid_input_vars(input_vars):
                 with st.spinner("运行中..."):
