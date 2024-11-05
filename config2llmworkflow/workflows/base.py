@@ -118,22 +118,27 @@ class DefaultWorkflow(BaseWorkflow):
             
             # 更新输出变量
             import json,re
+            datas = {}
             for node in nodes:
                 for var in node.config.output_vars:
                     output_vars[var.name] = self.variables[var.name]
                     if var.name == 'summary_1':
                         logger.info("⚡ summary_1:{}\n",self.variables['summary_1'])
-                        pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_1'])
                         # result_1 = json.loads(matches)
                         # for match in matches:
                         result_1 = {key: value for key, value in matches}
+                        if result_1:
                         # result_1=json.loads(self.variables['summary_1'])
-                        logger.info("⚡ summary_1:{}\n",result_1)
-                        output_vars.update(result_1)
+                            logger.info("⚡ summary_1:{}\n",result_1)
+                            output_vars.update(result_1)
+                        else:
+                            raise ValueError("result_1 is None")
+                        
                     if var.name == 'summary_2':
                         logger.info("⚡ summary_2:{}\n",self.variables['summary_2'])
-                        pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_2'])
                         # result_1 = json.loads(matches)
                         # for match in matches:
@@ -145,13 +150,13 @@ class DefaultWorkflow(BaseWorkflow):
                         output_vars.update({'L1':L1,'U1':U1})
                         self.variables['summary_2'] += "{下切牙所需的牙列间隙变化L1:"+str(L1)+",'上切牙所需的牙列间隙变化U1': '"+str(U1)+"' }"
                         logger.info("⚡ summary_2:{}\n",output_vars)
-                        logger.info("⚡ summary_2:{}\n",data)
+                        # logger.info("⚡ summary_2:{}\n",data)
 
                     if var.name == 'summary_3':
                         logger.info("⚡ summary_3:{}\n",self.variables['summary_3'])
                         # pattern = r'"(\w+)":\s*(\S+)'
                         # matches = re.findall(pattern, self.variables['summary_3'])
-                        pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_3'])
                         # result_1 = json.loads(matches)
                         # for match in matches:
@@ -174,7 +179,7 @@ class DefaultWorkflow(BaseWorkflow):
                         self.variables['summary_3'] += "{'上颌总间隙量':"+str(kuoGong+shangHe)+",'下颌总间隙量': '"+str(kuoGong+xiaHe)+"' }"
                     if var.name == 'summary_4':
                         logger.info("⚡ summary_4:{}\n",self.variables['summary_4'])
-                        pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_4'])
                         # result_1 = json.loads(matches)
                         # for match in matches:
@@ -187,12 +192,25 @@ class DefaultWorkflow(BaseWorkflow):
                         logger.info("⚡ result_4:{}\n",output_vars)
                     if var.name == 'summary_5':
                         logger.info("⚡ summary_5:{}\n",self.variables['summary_5'])
-                        pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_5'])
                         data = {key: value for key, value in matches}
-                        # output_vars.update(data)
+                        output_vars.update(data)
                         logger.info("⚡ summary_5:{}\n",data)
-
+                    if var.name == 'summary_6':
+                        logger.info("⚡ summary_6:{}\n",self.variables['summary_6'])
+                        # pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
+                        # matches = re.findall(pattern, self.variables['summary_5'])
+                        # data = {key: value for key, value in matches}
+                        # logger.info("⚡ summary_6:{}\n",data)
+                        shangHeZong = float(output_vars['上颌拥挤度']) + float(output_vars['U1']) + float(output_vars['上颌总间隙量']) + float(output_vars['上颌Bolton间隙'])
+                        xiaHeZong = float(output_vars['下颌拥挤度']) + float(output_vars['L1']) + float(output_vars['下颌总间隙量']) +float(output_vars['Spee曲整平所需间隙'])+ float(output_vars['下颌Bolton所需间隙'])
+                        data = {'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong}
+                        output_vars.update({'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong})
+                        self.variables.update({'summary_6':data})
+                        logger.info("⚡ summary_6:{}\n",self.variables['summary_6'])
+                    if var.name == 'final_result':
+                        logger.info("⚡ final_result:{}\n",output_vars)
 
         logger.info(
             "✅[Workflow]Finished running default workflow: {}", self.config.name
