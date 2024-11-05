@@ -1,7 +1,7 @@
 import re
 from typing import List, Dict, Any
 import concurrent.futures
-
+import streamlit as st
 from config2llmworkflow.configs.workflows.base import BaseWorkflowConfig
 from config2llmworkflow.nodes.base import Node
 from config2llmworkflow.configs.nodes.base import NodeType
@@ -134,7 +134,9 @@ class DefaultWorkflow(BaseWorkflow):
                             logger.info("⚡ summary_1:{}\n",result_1)
                             output_vars.update(result_1)
                         else:
-                            raise ValueError("result_1 is None")
+                            
+                            st.write("Agent1 识别有误，请再次运行")
+                            # raise ValueError("result_1 is None, rerun please.")
                         
                     if var.name == 'summary_2':
                         logger.info("⚡ summary_2:{}\n",self.variables['summary_2'])
@@ -161,11 +163,14 @@ class DefaultWorkflow(BaseWorkflow):
                         # result_1 = json.loads(matches)
                         # for match in matches:
                         data = {key: value for key, value in matches}
+                        if data:
+                        # result_1=json.loads(self.variables['summary_1'])
+                            # logger.info("⚡ _1:{}\n",result_1)
+                            output_vars.update(data)
+                        else:
+                            # import streamlit as st
+                            st.write("Agent3 识别有误，请再次运行")
                         
-                        output_vars.update(data)
-                        # result_3 = json.loads(self.variables['summary_3'])
-                        # logger.info("⚡ summary_3:{}\n",result_3)
-                        # output_vars.update(result_3)
                         # 计算上下总间隙量
                         kuoGong = float(data['D1'])+4-float(data['D2'])
                         logger.info("⚡扩弓量=D1{}-D2{}+4 ：{}\n",data['D1'],data['D2'],kuoGong)
@@ -183,34 +188,51 @@ class DefaultWorkflow(BaseWorkflow):
                         matches = re.findall(pattern, self.variables['summary_4'])
                         # result_1 = json.loads(matches)
                         # for match in matches:
-                        result_4 = {key: value for key, value in matches}
-                        # result_4 = json.loads(self.variables['summary_4'])
-                        logger.info("⚡ summary_3:{}\n",result_4)
-                        SpeeAvg = 0.5*(float(result_4['左Spee曲线深度']) + float(result_4['右Spee曲线深度']))
-                        output_vars.update(result_4)
+                        data = {key: value for key, value in matches}
+                        if data:
+                        # result_1=json.loads(self.variables['summary_1'])
+                            # logger.info("⚡ _1:{}\n",result_1)
+                            output_vars.update(data)
+                        else:
+                            # import streamlit as st
+                            st.write("Agent4识别有误，请再次运行")
+                        SpeeAvg = 0.5*(float(data['左Spee曲线深度']) + float(data['右Spee曲线深度']))
+                        # output_vars.update(data)
                         output_vars.update({'Spee曲整平所需间隙':SpeeAvg+0.5})
-                        logger.info("⚡ result_4:{}\n",output_vars)
+                        logger.info("⚡ Agent 4 data:{}\n",output_vars)
                     if var.name == 'summary_5':
                         logger.info("⚡ summary_5:{}\n",self.variables['summary_5'])
                         pattern = r'["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_5'])
                         data = {key: value for key, value in matches}
-                        output_vars.update(data)
+                        if data:
+                        # result_1=json.loads(self.variables['summary_1'])
+                            # logger.info("⚡ _1:{}\n",result_1)
+                            output_vars.update(data)
+                        else:
+                            # import streamlit as st
+                            st.write("Agent5 识别有误，请再次运行")
+                        # output_vars.update(data)
                         logger.info("⚡ summary_5:{}\n",data)
+                 
                     if var.name == 'summary_6':
-                        logger.info("⚡ summary_6:{}\n",self.variables['summary_6'])
-                        # pattern = r'"(\w+)":\s*([-+]?\d+\.?\d*)'
-                        # matches = re.findall(pattern, self.variables['summary_5'])
-                        # data = {key: value for key, value in matches}
-                        # logger.info("⚡ summary_6:{}\n",data)
-                        shangHeZong = float(output_vars['上颌拥挤度']) + float(output_vars['U1']) + float(output_vars['上颌总间隙量']) + float(output_vars['上颌Bolton间隙'])
-                        xiaHeZong = float(output_vars['下颌拥挤度']) + float(output_vars['L1']) + float(output_vars['下颌总间隙量']) +float(output_vars['Spee曲整平所需间隙'])+ float(output_vars['下颌Bolton所需间隙'])
-                        data = {'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong}
-                        output_vars.update({'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong})
-                        self.variables.update({'summary_6':data})
-                        logger.info("⚡ summary_6:{}\n",self.variables['summary_6'])
-                    if var.name == 'final_result':
-                        logger.info("⚡ final_result:{}\n",output_vars)
+                        logger.info("⚡ result_6:{}\n",output_vars['result_6'])
+                        pattern = r'[\'\"]*(\w+)[\'\"]*:\s*[\'\"]*([-+]?\d+\.?\d*)[\'\"]*'
+                        matches = re.findall(pattern, self.variables['result_6'])
+                        data = {key: value for key, value in matches}
+                        if data:
+                        # result_1=json.loads(self.variables['summary_1'])
+                            # logger.info("⚡ _1:{}\n",result_1)
+                            output_vars.update(data)
+                        else:
+                            # import streamlit as st
+                            st.write("Agent6 识别有误，请再次运行")
+                        shangHeZong = float(data['A1']) + float(data['B1']) +float(data['C1']) + float(data['D1'])
+                        xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
+                        logger.info("⚡ result_6:{}\n",data)
+                        result = {'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong}
+                        self.variables.update({'summary_6':result})
+
 
         logger.info(
             "✅[Workflow]Finished running default workflow: {}", self.config.name
