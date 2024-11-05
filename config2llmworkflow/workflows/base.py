@@ -183,7 +183,7 @@ class DefaultWorkflow(BaseWorkflow):
                         logger.info("⚡ summary_3:{}\n",output_vars)
                         self.variables['summary_3'] += "{'上颌总间隙量':"+str(kuoGong+shangHe)+",'下颌总间隙量': '"+str(kuoGong+xiaHe)+"' }"
                     if var.name == 'summary_4':
-                        logger.info("⚡ summary_4:{}\n",self.variables['summary_4'])
+                        # logger.info("⚡ summary_4:{}\n",self.variables['summary_4'])
                         pattern = r'[\'\"]*(\w+)[\'\"]*:\s*[\'\"]*([-+]?\d+\.?\d*)[\'\"]*'
                         matches = re.findall(pattern, self.variables['summary_4'])
                         # result_1 = json.loads(matches)
@@ -196,12 +196,13 @@ class DefaultWorkflow(BaseWorkflow):
                         else:
                             # import streamlit as st
                             st.write("Agent4识别有误，请再次运行")
-                        SpeeAvg = 0.5*(float(data['左Spee曲线深度']) + float(data['右Spee曲线深度']))
+                        SpeeAvg = 0.5*(float(data['左Spee曲线深度']) + float(data['右Spee曲线深度']))+0.5
                         # output_vars.update(data)
-                        output_vars.update({'Spee曲整平所需间隙':SpeeAvg+0.5})
-                        logger.info("⚡ Agent 4 data:{}\n",output_vars)
+                        output_vars.update({'Spee曲整平所需间隙':SpeeAvg})
+                        self.variables['summary_4'] += "{'Spee曲整平所需间隙':" + str(SpeeAvg) + "}\\n"
+                        # logger.info("⚡ Agent 4 data:{}\n",output_vars)
                     if var.name == 'summary_5':
-                        logger.info("⚡ summary_5:{}\n",self.variables['summary_5'])
+                        # logger.info("⚡ summary_5:{}\n",self.variables['summary_5'])
                         pattern = r'[\'\"]*(\w+)[\'\"]*:\s*[\'\"]*([-+]?\d+\.?\d*)[\'\"]*'
                         matches = re.findall(pattern, self.variables['summary_5'])
                         data = {key: value for key, value in matches}
@@ -213,10 +214,10 @@ class DefaultWorkflow(BaseWorkflow):
                             # import streamlit as st
                             st.write("Agent5 识别有误，请再次运行")
                         # output_vars.update(data)
-                        logger.info("⚡ summary_5:{}\n",data)
+                        # logger.info("⚡ summary_5:{}\n",data)
                  
                     if var.name == 'summary_6':
-                        logger.info("⚡ result_6:{}\n",output_vars['result_6'])
+                        # logger.info("⚡ result_6:{}\n",output_vars['result_6'])
                         pattern = r'[\'\"]*(\w+)[\'\"]*:\s*[\'\"]*([-+]?\d+\.?\d*)[\'\"]*'
                         matches = re.findall(pattern, self.variables['result_6'])
                         data = {key: value for key, value in matches}
@@ -229,7 +230,7 @@ class DefaultWorkflow(BaseWorkflow):
                             st.write("Agent6 识别有误，请再次运行")
                         shangHeZong = float(data['A1']) + float(data['B1']) +float(data['C1']) + float(data['D1'])
                         xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
-                        logger.info("⚡ result_6:{}\n",data)
+                        # logger.info("⚡ result_6:{}\n",data)
                         result = {'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong}
                         self.variables.update({'summary_6':result})
 
