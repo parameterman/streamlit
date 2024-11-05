@@ -164,9 +164,9 @@ class DefaultWorkflow(BaseWorkflow):
                         # 计算上下总间隙量
                         kuoGong = float(data['D1'])+4-float(data['D2'])
                         logger.info("⚡扩弓量=D1{}-D2{}+4 ：{}\n",data['D1'],data['D2'],kuoGong)
-                        shangHe = ((float(data['上颌左侧第一磨牙颊面转矩'])+float(data['上颌右侧第一磨牙颊面转矩'])) + 9)*0.2
+                        shangHe = ((float(data['上颌左侧第一磨牙颊面转矩'])+float(data['上颌右侧第一磨牙颊面转矩'])) + 18)*0.2
                         logger.info("⚡上颌平均：{}\n",shangHe)
-                        xiaHe = ((float(data['下颌左侧第一磨牙颊面转矩'])+float(data['下颌右侧第一磨牙颊面转矩'])) + 30)*0.2
+                        xiaHe = ((float(data['下颌左侧第一磨牙颊面转矩'])+float(data['下颌右侧第一磨牙颊面转矩'])) + 60)*0.2
                         logger.info("⚡下颌平均：{}\n",xiaHe)
                         
                         output_vars.update({'上颌总间隙量':kuoGong+shangHe,'下颌总间隙量':kuoGong+xiaHe})
