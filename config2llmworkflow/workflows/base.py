@@ -198,8 +198,8 @@ class DefaultWorkflow(BaseWorkflow):
                             st.write("Agent4识别有误，请再次运行")
                         SpeeAvg = 0.5*(float(data['左Spee曲线深度']) + float(data['右Spee曲线深度']))+0.5
                         # output_vars.update(data)
-                        output_vars.update({'Spee曲整平所需间隙':SpeeAvg})
-                        self.variables['summary_4'] += "{'Spee曲整平所需间隙':" + str(SpeeAvg) + "}\\n"
+                        output_vars.update({'Spee整平所需间隙':SpeeAvg})
+                        self.variables['summary_4'] += "{'Spee整平所需间隙':" + str(SpeeAvg) + "}\\n"
                         # logger.info("⚡ Agent 4 data:{}\n",output_vars)
                     if var.name == 'summary_5':
                         # logger.info("⚡ summary_5:{}\n",self.variables['summary_5'])
