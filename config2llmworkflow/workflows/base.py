@@ -188,9 +188,9 @@ class DefaultWorkflow(BaseWorkflow):
                         xiaHe = ((float(data['DL'])+float(data['DR'])) + 60)*0.2
                         logger.info("⚡下颌平均：{}\n",xiaHe)
                         
-                        output_vars.update({'上颌总间隙量':kuoGong+shangHe,'下颌总间隙量':kuoGong+xiaHe})
+                        output_vars.update({'上颌牙弓总间隙量':kuoGong+shangHe,'下颌牙弓总间隙量':kuoGong+xiaHe})
                         logger.info("⚡ summary_3:{}\n",output_vars)
-                        self.variables['summary_3'] += "{'上颌总间隙量':"+str(kuoGong+shangHe)+",'下颌总间隙量': '"+str(kuoGong+xiaHe)+"' }"
+                        self.variables['summary_3'] += "{'上颌牙弓总间隙量':"+str(kuoGong+shangHe)+",'下颌牙弓总间隙量': '"+str(kuoGong+xiaHe)+"' }"
                     if var.name == 'summary_4':
                         # logger.info("⚡ summary_4:{}\n",self.variables['summary_4'])
                         pattern = r'\s*[\'"]*(\w+)[\'"]*:\s*[\'"]*([-+]?\d+\.?\d*)[\'"]*'
@@ -230,6 +230,7 @@ class DefaultWorkflow(BaseWorkflow):
                             if result_1:
                                 logger.info("⚡ summary_5 正则表达式匹配有误，尝试使用json:{}\n",result_1)
                                 output_vars.update(result_1)
+
                             else:
                                 st.write("Agent5 识别有误，请再次运行")
                         # output_vars.update(data)
@@ -239,44 +240,22 @@ class DefaultWorkflow(BaseWorkflow):
                         # logger.info("⚡ result_6:{}\n",output_vars['result_6'])
                         pattern = r'\s*["]*(\w+)["]*:\s*["]*([-+]?\d+\.?\d*)["]*'
                         matches = re.findall(pattern, self.variables['summary_6'])
+                        data_1 = {'A1': '0', 'B1': '0', 'C1': '0', 'D1': '0', 'A2': '0', 'B2': '0','C2':'0', 'D2': '0','E2':'0'}
+                        output_vars.update(data_1)
                         data = {key: value for key, value in matches}
                         if data:
                         # result_1=json.loads(self.variables['summary_1'])
-                            # logger.info("⚡ _1:{}\n",result_1)
+                            logger.info("⚡ summary_6:{}\n",data)
                             output_vars.update(data)
                         else:
                             # import streamlit as st
                             
                             st.write("Agent6 识别有误，请再次运行")
                         # try:
-                        if not data['A1'] :
-                            data['A1']= 0
-                            
-                        if not data['A2'] :
-                            data['A2']= 0
                         
-                        if not data['B1'] :
-                            data['B1']= 0
-                        
-                        if not data['B2'] :
-                            data['B2']= 0
-                        
-                        if not data['C1'] :
-                            data['C1']= 0
-                            
-                        if not data['C2'] :
-                            data['C2']= 0
-                            
-                        if not data['D1'] :
-                            data['D1']= 0
-                            
-                        if not data['D2'] :
-                            data['D2']= 0
-                        if not data['E2']:
-                            data['E2']=0
                         shangHeZong = float(data['A1']) + float(data['B1']) +float(data['C1']) + float(data['D1'])
-                        if data['E2']:
-                            xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
+                        if output_vars['E2']:
+                            xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(output_vars['E2']) 
                         # except:
                         else:
                             xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2'])
