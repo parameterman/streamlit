@@ -249,7 +249,31 @@ class DefaultWorkflow(BaseWorkflow):
                             
                             st.write("Agent6 识别有误，请再次运行")
                         # try:
-
+                        if not data['A1'] :
+                            data['A1']= 0
+                            
+                        if not data['A2'] :
+                            data['A2']= 0
+                        
+                        if not data['B1'] :
+                            data['B1']= 0
+                        
+                        if not data['B2'] :
+                            data['B2']= 0
+                        
+                        if not data['C1'] :
+                            data['C1']= 0
+                            
+                        if not data['C2'] :
+                            data['C2']= 0
+                            
+                        if not data['D1'] :
+                            data['D1']= 0
+                            
+                        if not data['D2'] :
+                            data['D2']= 0
+                        if not data['E2']:
+                            data['E2']=0
                         shangHeZong = float(data['A1']) + float(data['B1']) +float(data['C1']) + float(data['D1'])
                         if data['E2']:
                             xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
