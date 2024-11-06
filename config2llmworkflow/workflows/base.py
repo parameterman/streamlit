@@ -219,7 +219,7 @@ class DefaultWorkflow(BaseWorkflow):
                     if var.name == 'summary_6':
                         # logger.info("⚡ result_6:{}\n",output_vars['result_6'])
                         pattern = r'[\'\"]*(\w+)[\'\"]*:\s*[\'\"]*([-+]?\d+\.?\d*)[\'\"]*'
-                        matches = re.findall(pattern, self.variables['result_6'])
+                        matches = re.findall(pattern, self.variables['summary_6'])
                         data = {key: value for key, value in matches}
                         if data:
                         # result_1=json.loads(self.variables['summary_1'])
