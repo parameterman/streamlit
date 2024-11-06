@@ -134,8 +134,12 @@ class DefaultWorkflow(BaseWorkflow):
                             logger.info("⚡ summary_1:{}\n",result_1)
                             output_vars.update(result_1)
                         else:
-                            
-                            st.write("Agent1 识别有误，请再次运行")
+                            result_1 = json.loads(self.variables['summary_1'])
+                            if result_1:
+                                logger.info("⚡ summary_1:{}\n",result_1)
+                                output_vars.update(result_1)
+                            else:
+                                st.write("Agent1 识别有误，请再次运行")
                             # raise ValueError("result_1 is None, rerun please.")
                         
                     if var.name == 'summary_2':
@@ -169,7 +173,12 @@ class DefaultWorkflow(BaseWorkflow):
                             output_vars.update(data)
                         else:
                             # import streamlit as st
-                            st.write("Agent3 识别有误，请再次运行")
+                            result_1 = json.loads(self.variables['summary_3'])
+                            if result_1:
+                                logger.info("⚡ summary_3 正则表达式匹配有误，尝试使用json:{}\n",result_1)
+                                output_vars.update(result_1)
+                            else:
+                                st.write("Agent3 识别有误，请再次运行")
                         
                         # 计算上下总间隙量
                         kuoGong = float(data['D1'])+4-float(data['D2'])
@@ -195,7 +204,12 @@ class DefaultWorkflow(BaseWorkflow):
                             output_vars.update(data)
                         else:
                             # import streamlit as st
-                            st.write("Agent4识别有误，请再次运行")
+                            result_1 = json.loads(self.variables['summary_1'])
+                            if result_1:
+                                logger.info("⚡ summary_4 正则表达式匹配有误，尝试使用json::{}\n",result_1)
+                                output_vars.update(result_1)
+                            else:
+                                st.write("Agent4识别有误，请再次运行")
                         SpeeAvg = 0.5*(float(data['左Spee曲线深度']) + float(data['右Spee曲线深度']))+0.5
                         # output_vars.update(data)
                         output_vars.update({'Spee整平所需间隙':SpeeAvg})
@@ -212,7 +226,12 @@ class DefaultWorkflow(BaseWorkflow):
                             output_vars.update(data)
                         else:
                             # import streamlit as st
-                            st.write("Agent5 识别有误，请再次运行")
+                            result_1 = json.loads(self.variables['summary_1'])
+                            if result_1:
+                                logger.info("⚡ summary_5 正则表达式匹配有误，尝试使用json:{}\n",result_1)
+                                output_vars.update(result_1)
+                            else:
+                                st.write("Agent5 识别有误，请再次运行")
                         # output_vars.update(data)
                         # logger.info("⚡ summary_5:{}\n",data)
                  
@@ -227,9 +246,17 @@ class DefaultWorkflow(BaseWorkflow):
                             output_vars.update(data)
                         else:
                             # import streamlit as st
+                            
                             st.write("Agent6 识别有误，请再次运行")
+                        # try:
+
                         shangHeZong = float(data['A1']) + float(data['B1']) +float(data['C1']) + float(data['D1'])
-                        xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
+                        if data['E2']:
+                            xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2']) +float(data['E2']) 
+                        # except:
+                        else:
+                            xiaHeZong = float(data['A2']) + float(data['B2']) +float(data['C2']) + float(data['D2'])
+
                         # logger.info("⚡ result_6:{}\n",data)
                         result = {'上颌总间隙需求量':shangHeZong,'下颌总间隙需求量':xiaHeZong}
                         self.variables.update({'summary_6':result})
