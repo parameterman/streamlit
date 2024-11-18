@@ -181,16 +181,21 @@ class DefaultWorkflow(BaseWorkflow):
                                 st.write("Agent3 识别有误，请再次运行")
                         
                         # 计算上下总间隙量
-                        kuoGong = float(data['D1'])+4-float(data['D2'])
-                        logger.info("⚡扩弓量=D1{}-D2{}+4 ：{}\n",data['D1'],data['D2'],kuoGong)
-                        shangHe = ((float(data['HL'])+float(data['HR'])) + 18)*0.2
-                        logger.info("⚡上颌平均：{}\n",shangHe)
-                        xiaHe = ((float(data['DL'])+float(data['DR'])) + 60)*0.2
-                        logger.info("⚡下颌平均：{}\n",xiaHe)
+                        # kuoGong = float(data['D1'])+4-float(data['D2'])
+                        # logger.info("⚡扩弓量=D1{}-D2{}+4 ：{}\n",data['D1'],data['D2'],kuoGong)
+                        # shangHe = ((float(data['HL'])+float(data['HR'])) + 18)*0.2
+                        # logger.info("⚡上颌平均：{}\n",shangHe)
+                        # xiaHe = ((float(data['DL'])+float(data['DR'])) + 60)*0.2
+                        # logger.info("⚡下颌平均：{}\n",xiaHe)
                         
-                        output_vars.update({'上颌牙弓总间隙量':kuoGong+shangHe,'下颌牙弓总间隙量':kuoGong+xiaHe})
+                        # output_vars.update({'上颌牙弓总间隙量':kuoGong+shangHe,'下颌牙弓总间隙量':kuoGong+xiaHe})
+                        # logger.info("⚡ summary_3:{}\n",output_vars)
+                        # self.variables['summary_3'] += "{'上颌牙弓总间隙量':"+str(kuoGong+shangHe)+",'下颌牙弓总间隙量': '"+str(kuoGong+xiaHe)+"' }"
+                        kuoGong = 0.5*(float(data['D1'])+4-float(data['D2']))
+                        logger.info("⚡扩弓量=D1{}-D2{}+4 ：{}\n",data['D1'],data['D2'],kuoGong)
+                        
                         logger.info("⚡ summary_3:{}\n",output_vars)
-                        self.variables['summary_3'] += "{'上颌牙弓总间隙量':"+str(kuoGong+shangHe)+",'下颌牙弓总间隙量': '"+str(kuoGong+xiaHe)+"' }"
+                        self.variables['summary_3'] += "{'扩弓量': '"+str(kuoGong)+"' }"
                     if var.name == 'summary_4':
                         # logger.info("⚡ summary_4:{}\n",self.variables['summary_4'])
                         pattern = r'\s*[\'"]*(\w+)[\'"]*:\s*[\'"]*([-+]?\d+\.?\d*)[\'"]*'
